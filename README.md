@@ -19,8 +19,16 @@
 ```bash
 curl -fsSL https://raw.githubusercontent.com/qiangweihewu/nginx-script/main/install.sh -o /tmp/install.sh && sudo bash /tmp/install.sh
 ```
-
+运行后会依次提示：
+1. 输入要配置的域名（如 `example.com`）
+2. 选择证书处理方式：
+   - `1`：自动安装 Certbot 并以 `standalone` 模式申请 Let's Encrypt 证书，同时配置每天凌晨 `02:15` 的 Crontab 自动续期任务。
+   - `2`：使用自备证书（支持直接输入现有证书路径自动拷贝到 `/etc/letsencrypt/live/<域名>/`）。
+   - `3`：暂时忽略证书，仅安装 Nginx 与写入配置文件。
+  
 ### 方式二：无交互直接传参安装（适合自动化部署）
+
+语法：`sudo bash install.sh <域名> [mainline|stable] [certbot|custom|skip] [邮箱]`
 
 将 `your.domain.com` 替换为你的实际域名，默认安装 **Mainline（主线最新版）**：
 
@@ -28,10 +36,38 @@ curl -fsSL https://raw.githubusercontent.com/qiangweihewu/nginx-script/main/inst
 curl -fsSL https://raw.githubusercontent.com/qiangweihewu/nginx-script/main/install.sh | sudo bash -s -- your.domain.com
 ```
 
+```bash
+# 自动安装 Mainline 版 + 自动通过 Certbot 申请证书并配置定时续期
+curl -fsSL https://raw.githubusercontent.com/qiangweihewu/nginx-script/main/install.sh | sudo bash -s -- your.domain.com mainline certbot admin@your.domain.com
+
+# 仅安装并写入配置，跳过证书申请
+curl -fsSL https://raw.githubusercontent.com/qiangweihewu/nginx-script/main/install.sh | sudo bash -s -- your.domain.com mainline skip
+```
+
 如果需要安装 **Stable（稳定版）**，可在域名后追加 `stable` 参数：
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/qiangweihewu/nginx-script/main/install.sh | sudo bash -s -- your.domain.com stable
+```
+---
+
+## 🔐 Certbot 证书常用维护命令
+
+```bash
+# 查看当前已安装的证书状态与到期时间
+sudo certbot certificates
+
+# 测试自动续期（演练模式，不实际签发）
+sudo certbot renew --dry-run --pre-hook "systemctl stop nginx" --post-hook "systemctl start nginx"
+
+# 手动强制更新证书
+sudo systemctl stop nginx && sudo certbot renew && sudo systemctl start nginx
+
+# 删除指定域名的证书
+sudo certbot delete --cert-name your.domain.com
+
+# 查看已配置的 root 自动续期定时任务
+sudo crontab -u root -l
 ```
 
 ### 方式三：下载到本地后运行
