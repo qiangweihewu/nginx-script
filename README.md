@@ -19,8 +19,7 @@
 使用 `root` 用户或带有 `sudo` 权限的用户执行：
 
 ```bash
-sudo bash <(curl -fsSL [https://raw.githubusercontent.com/qiangweihewu/nginx-script/main/install.sh](https://raw.githubusercontent.com/qiangweihewu/nginx-script/main/install.sh))
-
+sudo bash <(curl -fsSL https://raw.githubusercontent.com/qiangweihewu/nginx-script/main/install.sh)
 ```
 
 ### 方式二：无交互直接传参安装（适合自动化部署）
@@ -28,21 +27,21 @@ sudo bash <(curl -fsSL [https://raw.githubusercontent.com/qiangweihewu/nginx-scr
 将 `your.domain.com` 替换为你的实际域名，默认安装 **Mainline（主线最新版）**：
 
 ```bash
-curl -fsSL [https://raw.githubusercontent.com/qiangweihewu/nginx-script/main/install.sh](https://raw.githubusercontent.com/qiangweihewu/nginx-script/main/install.sh) | sudo bash -s -- your.domain.com
+curl -fsSL https://raw.githubusercontent.com/qiangweihewu/nginx-script/main/install.sh | sudo bash -s -- your.domain.com
 
 ```
 
 如果需要安装 **Stable（稳定版）**，可在域名后追加 `stable` 参数：
 
 ```bash
-curl -fsSL [https://raw.githubusercontent.com/qiangweihewu/nginx-script/main/install.sh](https://raw.githubusercontent.com/qiangweihewu/nginx-script/main/install.sh) | sudo bash -s -- your.domain.com stable
+curl -fsSL https://raw.githubusercontent.com/qiangweihewu/nginx-script/main/install.sh | sudo bash -s -- your.domain.com stable
 
 ```
 
 ### 方式三：下载到本地后运行
 
 ```bash
-curl -fsSLO [https://raw.githubusercontent.com/qiangweihewu/nginx-script/main/install.sh](https://raw.githubusercontent.com/qiangweihewu/nginx-script/main/install.sh)
+curl -fsSLO https://raw.githubusercontent.com/qiangweihewu/nginx-script/main/install.sh
 chmod +x install.sh
 sudo ./install.sh
 
